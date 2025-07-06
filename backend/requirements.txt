@@ -1,0 +1,26 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+python-dotenv==1.0.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# AI and ML
+openai-whisper==20231117
+google-generativeai==0.3.2
+sentence-transformers==2.2.2
+chromadb==0.4.18
+numpy==1.24.3
+
+# Video processing
+ffmpeg-python==0.2.0
+moviepy==1.0.3
+
+# General utilities
+aiofiles==23.2.0
+httpx==0.25.2
+Pillow==10.1.0
+tqdm==4.66.1
+
+# Database and storage
+aiosqlite==0.19.0 
