@@ -5,16 +5,18 @@ python-dotenv==1.0.0
 pydantic==2.5.0
 pydantic-settings==2.1.0
 
-# AI and ML
-openai-whisper==20231117
+# Build tools
+setuptools>=65.0.0
+wheel
+
+# AI and ML (simplified for now)
 google-generativeai==0.3.2
-sentence-transformers==2.2.2
-chromadb==0.4.18
-numpy==1.24.3
+numpy>=1.21.0
+torch>=1.13.0
+transformers>=4.21.0
 
 # Video processing
 ffmpeg-python==0.2.0
-moviepy==1.0.3
 
 # General utilities
 aiofiles==23.2.0

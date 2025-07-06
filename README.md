@@ -2,6 +2,8 @@
 
 A comprehensive application that processes lecture videos, generates transcripts, and enables natural language conversations with lecture content using RAG (Retrieval-Augmented Generation) architecture.
 
+![Lecture RAG Application](./lec1.png)
+
 ## Features
 
 - **Video Upload**: Support for 2-3 hour lecture video uploads
@@ -14,12 +16,14 @@ A comprehensive application that processes lecture videos, generates transcripts
 ## Architecture
 
 ### Frontend (Next.js)
+
 - Video upload interface
 - Interactive chat component
 - Video player with timestamp navigation
 - Modern, responsive UI
 
 ### Backend (FastAPI)
+
 - Video processing pipeline
 - RAG implementation with vector storage
 - AI-powered response generation using Gemini 2.5 Pro
@@ -35,6 +39,7 @@ A comprehensive application that processes lecture videos, generates transcripts
 ## Installation
 
 ### Prerequisites
+
 - Node.js 18+ with pnpm
 - Python 3.8+ with venv
 - FFmpeg for video processing
@@ -42,12 +47,14 @@ A comprehensive application that processes lecture videos, generates transcripts
 ### Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd Chat-with-your-Lecture
    ```
 
 2. **Backend Setup**
+
    ```bash
    cd backend
    python3 -m venv venv
@@ -56,6 +63,7 @@ A comprehensive application that processes lecture videos, generates transcripts
    ```
 
 3. **Frontend Setup**
+
    ```bash
    cd frontend
    pnpm install
@@ -68,6 +76,7 @@ A comprehensive application that processes lecture videos, generates transcripts
 ## Usage
 
 1. **Start Backend**
+
    ```bash
    cd backend
    source venv/bin/activate
@@ -75,6 +84,7 @@ A comprehensive application that processes lecture videos, generates transcripts
    ```
 
 2. **Start Frontend**
+
    ```bash
    cd frontend
    pnpm dev
@@ -107,4 +117,4 @@ Once running, visit http://localhost:8000/docs for interactive API documentation
 
 ## License
 
-MIT License 
+MIT License

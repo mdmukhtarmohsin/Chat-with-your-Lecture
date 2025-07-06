@@ -5,8 +5,10 @@ from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
 
-from app.routes import video, chat, health
+# Import all routes
+from app.routes import health, video, chat
 from app.services.database import DatabaseService
+from app.services.rag_service import RAGService
 
 load_dotenv()
 
@@ -20,16 +22,23 @@ async def lifespan(app: FastAPI):
     # Startup
     print("🚀 Starting Lecture RAG Application...")
     
-    # Initialize database service
+    # Initialize services
     db_service = DatabaseService()
     await db_service.initialize()
-    app.state.db_service = db_service
     
-    print("✅ Application started successfully")
+    rag_service = RAGService(db_service)
+    await rag_service.initialize()
+    
+    # Store services in app state
+    app.state.db_service = db_service
+    app.state.rag_service = rag_service
+    
+    print("✅ All services initialized successfully")
     yield
     
     # Shutdown
     print("🛑 Shutting down application...")
+    await db_service.close()
 
 app = FastAPI(
     title="Lecture RAG API",
@@ -53,9 +62,9 @@ app.add_middleware(
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 app.mount("/processed", StaticFiles(directory="processed"), name="processed")
 
-# Include routes
+# Include all routes
 app.include_router(health.router, prefix="/api/v1", tags=["health"])
-app.include_router(video.router, prefix="/api/v1", tags=["video"])
+app.include_router(video.router, prefix="/api/v1", tags=["videos"])
 app.include_router(chat.router, prefix="/api/v1", tags=["chat"])
 
 @app.get("/")
@@ -64,7 +73,12 @@ async def root():
         "message": "Lecture RAG API",
         "version": "1.0.0",
         "docs": "/docs",
-        "health": "/api/v1/health"
+        "health": "/api/v1/health",
+        "endpoints": {
+            "videos": "/api/v1/videos",
+            "upload": "/api/v1/videos/upload", 
+            "chat": "/api/v1/chat/{video_id}"
+        }
     }
 
 if __name__ == "__main__":
