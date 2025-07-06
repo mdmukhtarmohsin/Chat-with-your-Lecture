@@ -39,6 +39,30 @@ class RAGService:
         except Exception as e:
             print(f"Error initializing ChromaDB: {e}")
     
+    async def initialize(self):
+        """Initialize the RAG service with required models and services."""
+        try:
+            print("Initializing RAG service...")
+            
+            # Initialize embedding model (lazy loading)
+            # This will be loaded when needed to avoid startup delays
+            
+            # Verify ChromaDB is working
+            if self.chroma_client is None:
+                self._initialize_chroma()
+            
+            # Test Gemini connection if API key is available
+            if self.gemini_model:
+                print("Gemini model configured successfully")
+            else:
+                print("Warning: Gemini API key not found - chat functionality will be limited")
+                
+            print("RAG service initialized successfully")
+            
+        except Exception as e:
+            print(f"Error initializing RAG service: {e}")
+            raise
+    
     def _load_embedding_model(self):
         """Load sentence transformer model lazily."""
         if self.embedding_model is None:

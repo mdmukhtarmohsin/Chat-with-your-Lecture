@@ -3,7 +3,7 @@ from typing import Dict, Any
 import uuid
 from datetime import datetime
 
-from app.models.chat import ChatRequest, ChatResponse, ChatMessage, ConversationSession
+from app.models.chat import ChatRequest, ChatResponse, ChatMessage, ConversationSession, ChatBody
 from app.models.video import ProcessingStatus
 from app.services.database import DatabaseService
 from app.services.rag_service import RAGService
@@ -16,9 +16,10 @@ def get_services(request: Request):
     rag_service = RAGService(db_service)
     return db_service, rag_service
 
-@router.post("/chat", response_model=ChatResponse)
+@router.post("/chat/{video_id}", response_model=ChatResponse)
 async def chat_with_video(
-    request: ChatRequest,
+    video_id: str,
+    request: ChatBody,
     services=Depends(get_services)
 ) -> ChatResponse:
     """Chat with video content using RAG."""
@@ -26,7 +27,7 @@ async def chat_with_video(
     
     try:
         # Validate video exists and is processed
-        video_metadata = await db_service.get_video_metadata(request.video_id)
+        video_metadata = await db_service.get_video_metadata(video_id)
         if not video_metadata:
             raise HTTPException(status_code=404, detail="Video not found")
         
@@ -50,8 +51,15 @@ async def chat_with_video(
                 detail=f"{message}. Please wait for processing to complete."
             )
         
+        # Construct the full ChatRequest object
+        full_chat_request = ChatRequest(
+            video_id=video_id,
+            question=request.question,
+            conversation_history=request.conversation_history
+        )
+
         # Generate response using RAG
-        response = await rag_service.generate_response(request)
+        response = await rag_service.generate_response(full_chat_request)
         
         return response
         

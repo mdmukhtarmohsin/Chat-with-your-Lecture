@@ -8,7 +8,7 @@ interface ChatMessage {
   content: string;
   timestamp: Date;
   sources?: Array<{
-    chunk_text: string;
+    text: string;
     start_time: number;
     end_time: number;
   }>;
@@ -56,7 +56,7 @@ export function ChatInterface({ video }: ChatInterfaceProps) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            message: userMessage.content,
+            question: userMessage.content,
             conversation_history: messages.map((m) => ({
               role: m.role,
               content: m.content,
@@ -74,9 +74,9 @@ export function ChatInterface({ video }: ChatInterfaceProps) {
       const assistantMessage: ChatMessage = {
         role: "assistant",
         content:
-          data.response || "I apologize, but I couldn't generate a response.",
+          data.answer || "I apologize, but I couldn't generate a response.",
         timestamp: new Date(),
-        sources: data.sources || [],
+        sources: data.relevant_chunks || [],
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
@@ -209,7 +209,7 @@ export function ChatInterface({ video }: ChatInterfaceProps) {
                         </button>
                       </div>
                       <p className="text-gray-700 italic">
-                        "{source.chunk_text.substring(0, 150)}..."
+                        "{source.text.substring(0, 150)}..."
                       </p>
                     </div>
                   ))}

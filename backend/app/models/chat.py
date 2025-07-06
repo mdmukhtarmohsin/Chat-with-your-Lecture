@@ -12,6 +12,10 @@ class ChatRequest(BaseModel):
     question: str = Field(..., description="User's question")
     conversation_history: Optional[List[ChatMessage]] = Field(default=[], description="Previous conversation messages")
 
+class ChatBody(BaseModel):
+    question: str = Field(..., description="User's question")
+    conversation_history: Optional[List[ChatMessage]] = Field(default=[], description="Previous conversation messages")
+
 class RelevantChunk(BaseModel):
     chunk_id: str = Field(..., description="ID of the relevant chunk")
     text: str = Field(..., description="Text content of the chunk")

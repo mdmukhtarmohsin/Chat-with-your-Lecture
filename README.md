@@ -3,6 +3,10 @@
 A comprehensive application that processes lecture videos, generates transcripts, and enables natural language conversations with lecture content using RAG (Retrieval-Augmented Generation) architecture.
 
 ![Lecture RAG Application](./lec1.png)
+![Lecture RAG Application](./lec2.png)
+![Lecture RAG Application](./lec3.png)
+![Lecture RAG Application](./lec4.png)
+![Lecture RAG Application](./lec5.png)
 
 ## Features
 

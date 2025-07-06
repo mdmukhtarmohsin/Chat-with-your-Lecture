@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 # Import all routes
 from app.routes import health, video, chat
 from app.services.database import DatabaseService
-from app.services.rag_service import RAGService
 
 load_dotenv()
 
@@ -22,18 +21,25 @@ async def lifespan(app: FastAPI):
     # Startup
     print("🚀 Starting Lecture RAG Application...")
     
-    # Initialize services
+    # Initialize database service
     db_service = DatabaseService()
     await db_service.initialize()
-    
-    rag_service = RAGService(db_service)
-    await rag_service.initialize()
-    
-    # Store services in app state
     app.state.db_service = db_service
-    app.state.rag_service = rag_service
+    print("✅ Database service initialized")
     
-    print("✅ All services initialized successfully")
+    # Initialize RAG service with error handling
+    try:
+        from app.services.rag_service import RAGService
+        rag_service = RAGService(db_service)
+        await rag_service.initialize()
+        app.state.rag_service = rag_service
+        print("✅ RAG service initialized")
+    except Exception as e:
+        print(f"⚠️  RAG service initialization failed: {e}")
+        print("⚠️  Chat functionality will be limited")
+        app.state.rag_service = None
+    
+    print("✅ Application started successfully")
     yield
     
     # Shutdown

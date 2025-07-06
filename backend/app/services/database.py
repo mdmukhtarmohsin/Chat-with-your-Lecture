@@ -256,4 +256,10 @@ class DatabaseService:
                 return True
         except Exception as e:
             print(f"Error saving chat message: {e}")
-            return False 
+            return False
+
+    async def close(self):
+        """Close database connections and clean up resources."""
+        # SQLite connections are automatically closed in aiosqlite context managers
+        # This method is here for interface consistency and future extensibility
+        pass 
